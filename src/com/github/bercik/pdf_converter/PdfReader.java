@@ -1,4 +1,4 @@
-package com.github.bercik.convert;
+package com.github.bercik.pdf_converter;
 
 import java.io.File;
 import java.io.IOException;

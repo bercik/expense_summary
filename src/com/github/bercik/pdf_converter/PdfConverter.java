@@ -1,4 +1,4 @@
-package com.github.bercik.convert;
+package com.github.bercik.pdf_converter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,14 +9,15 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.json.simple.JSONObject;
+import com.github.bercik.commons.Transaction;
+import com.github.bercik.commons.Transactions;
 
-public class Converter {
+public class PdfConverter {
 
     private SimpleDateFormat dateFormatter;
 
-    public Converter() {
-        dateFormatter = new SimpleDateFormat("yyyy.MM.dd");
+    public PdfConverter(SimpleDateFormat dateFormatter) {
+        this.dateFormatter = dateFormatter;
         dateFormatter.setLenient(false);
     }
 
@@ -25,26 +26,14 @@ public class Converter {
 
         List<Block> blocks = getBlocks(inputText);
 
-        List<Transaction> transactions = proccessBlocks(blocks);
-
-        JSONObject jsonObject = toJSON(transactions);
-
-        return jsonObject.toJSONString();
+        return proccessBlocks(blocks).toJsonString();
     }
 
-    private JSONObject toJSON(List<Transaction> transactions) {
-        JSONObject jsonObject = new JSONObject();
-
-        jsonObject.put("transactions", transactions);
-
-        return jsonObject;
-    }
-
-    private List<Transaction> proccessBlocks(List<Block> blocks) {
-        List<Transaction> transactions = new ArrayList<>();
+    private Transactions proccessBlocks(List<Block> blocks) {
+        Transactions transactions = new Transactions();
 
         for (Block block : blocks) {
-            transactions.add(proccessBlock(block));
+            transactions.addTransaction(proccessBlock(block));
         }
 
         return transactions;
@@ -72,7 +61,7 @@ public class Converter {
             }
         }
 
-        return new Transaction(block.getFirstDate(), block.getSecondDate(), name, valueInPennies,
+        return new Transaction(dateFormatter, block.getFirstDate(), block.getSecondDate(), name, valueInPennies,
                 accountBalanceInPennies);
     }
 
@@ -182,38 +171,4 @@ public class Converter {
         }
     }
 
-    // TODO dodac od kogo/do kogo przelew, tytul itp.
-    private class Transaction {
-        // data ksiegowania
-        private final Date bookingDate;
-        // data operacji
-        private final Date transactionDate;
-        // nazwa operacji np. PRZELEW KRAJOWY, PŁACĘ Z T-MOBILE USŁUGI BANKOWE
-        private final String name;
-        // wartość operacji w groszach np. -7200, 27570
-        private final int valueInPennies;
-        // saldo ksiegowe w groszach
-        private final int accountBalanceInPennies;
-
-        Transaction(Date bookingDate, Date transactionDate, String name, int valueInPennies, int accountBalanceInPennies) {
-            this.bookingDate = bookingDate;
-            this.transactionDate = transactionDate;
-            this.name = name;
-            this.valueInPennies = valueInPennies;
-            this.accountBalanceInPennies = accountBalanceInPennies;
-        }
-
-        @Override
-        public String toString() {
-            JSONObject jsonObject = new JSONObject();
-
-            jsonObject.put("name", name);
-            jsonObject.put("bookingDate", dateFormatter.format(bookingDate));
-            jsonObject.put("transactionDate", dateFormatter.format(transactionDate));
-            jsonObject.put("valueInPennies", valueInPennies);
-            jsonObject.put("accountBalanceInPennies", accountBalanceInPennies);
-
-            return jsonObject.toJSONString();
-        }
-    }
 }
