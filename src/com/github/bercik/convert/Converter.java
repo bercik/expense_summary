@@ -1,4 +1,4 @@
-package com.github.bercik;
+package com.github.bercik.convert;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,16 +11,16 @@ import java.util.regex.Pattern;
 
 import org.json.simple.JSONObject;
 
-class Converter {
+public class Converter {
 
     private SimpleDateFormat dateFormatter;
 
-    Converter() {
+    public Converter() {
         dateFormatter = new SimpleDateFormat("yyyy.MM.dd");
         dateFormatter.setLenient(false);
     }
 
-    String convertToJSON(String inputText) {
+    public String convertToJSON(String inputText) {
         inputText = normalizeText(inputText);
 
         List<Block> blocks = getBlocks(inputText);
