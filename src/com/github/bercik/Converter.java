@@ -1,7 +1,5 @@
-package main.java.com.github.bercik;
+package com.github.bercik;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,23 +9,38 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.text.PDFTextStripper;
+import org.json.simple.JSONObject;
 
-public class Main {
-    public static void main(String[] args) throws IOException {
-        String text = readTextFromPDF("wyciag.pdf");
-        text = normalizeText(text);
-        List<Block> blocks = getBlocks(text);
+class Converter {
+
+    private SimpleDateFormat dateFormatter;
+
+    Converter() {
+        dateFormatter = new SimpleDateFormat("yyyy.MM.dd");
+        dateFormatter.setLenient(false);
+    }
+
+    String convertToJSON(String inputText) {
+        inputText = normalizeText(inputText);
+
+        List<Block> blocks = getBlocks(inputText);
 
         List<Transaction> transactions = proccessBlocks(blocks);
 
-        for (Transaction transaction : transactions) {
-            System.out.println(transaction);
-        }
+        JSONObject jsonObject = toJSON(transactions);
+
+        return jsonObject.toJSONString();
     }
 
-    private static List<Transaction> proccessBlocks(List<Block> blocks) {
+    private JSONObject toJSON(List<Transaction> transactions) {
+        JSONObject jsonObject = new JSONObject();
+
+        jsonObject.put("transactions", transactions);
+
+        return jsonObject;
+    }
+
+    private List<Transaction> proccessBlocks(List<Block> blocks) {
         List<Transaction> transactions = new ArrayList<>();
 
         for (Block block : blocks) {
@@ -37,7 +50,7 @@ public class Main {
         return transactions;
     }
 
-    private static Transaction proccessBlock(Block block) {
+    private Transaction proccessBlock(Block block) {
         String name = null;
         StringBuilder tmpName = new StringBuilder();
         int valueInPennies = 0;
@@ -50,8 +63,7 @@ public class Main {
                 if (value.isPresent()) {
                     name = tmpName.substring(0, tmpName.length() - 1);
                     valueInPennies = value.get();
-                }
-                else {
+                } else {
                     tmpName.append(word).append(" ");
                 }
             } else {
@@ -64,7 +76,7 @@ public class Main {
                 accountBalanceInPennies);
     }
 
-    private static Optional<Integer> getValueInPennies(String word) {
+    private Optional<Integer> getValueInPennies(String word) {
         Pattern pattern = Pattern.compile("^(-?)(\\d+),(\\d{2})$");
         Matcher matcher = pattern.matcher(word);
         if (matcher.find()) {
@@ -84,7 +96,7 @@ public class Main {
         return Optional.empty();
     }
 
-    private static List<Block> getBlocks(String text) {
+    private List<Block> getBlocks(String text) {
         StringBuilder word = new StringBuilder();
         Date firstDate = null;
         Date secondDate = null;
@@ -132,105 +144,76 @@ public class Main {
         return blocks;
     }
 
-    private static Optional<Date> getDate(String word) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd");
-        formatter.setLenient(false);
+    private Optional<Date> getDate(String word) {
         try {
-            return Optional.of(formatter.parse(word));
+            return Optional.of(dateFormatter.parse(word));
         } catch (ParseException e) {
             return Optional.empty();
         }
     }
 
-    private static String normalizeText(String text) {
+    private String normalizeText(String text) {
         text = text.replaceAll("\n", " ");
         text = text.replaceAll("\\s+", " ");
         return text;
     }
 
-    private static String readTextFromPDF(@SuppressWarnings("SameParameterValue") String filepath) throws IOException {
-        File file = new File(filepath);
-        PDDocument document = PDDocument.load(file);
+    private class Block {
+        private final Date firstDate;
+        private final Date secondDate;
+        private final List<String> words;
 
-        PDFTextStripper pdfTextStripper = new PDFTextStripper();
+        Block(Date firstDate, Date secondDate, List<String> words) {
+            this.firstDate = firstDate;
+            this.secondDate = secondDate;
+            this.words = words;
+        }
 
-        return pdfTextStripper.getText(document);
-    }
-}
+        Date getFirstDate() {
+            return firstDate;
+        }
 
-class Block {
-    private final Date firstDate;
-    private final Date secondDate;
-    private final List<String> words;
+        Date getSecondDate() {
+            return secondDate;
+        }
 
-    Block(Date firstDate, Date secondDate, List<String> words) {
-        this.firstDate = firstDate;
-        this.secondDate = secondDate;
-        this.words = words;
-    }
-
-    Date getFirstDate() {
-        return firstDate;
-    }
-
-    Date getSecondDate() {
-        return secondDate;
+        List<String> getWords() {
+            return words;
+        }
     }
 
-    List<String> getWords() {
-        return words;
-    }
-}
+    // TODO dodac od kogo/do kogo przelew, tytul itp.
+    private class Transaction {
+        // data ksiegowania
+        private final Date bookingDate;
+        // data operacji
+        private final Date transactionDate;
+        // nazwa operacji np. PRZELEW KRAJOWY, PŁACĘ Z T-MOBILE USŁUGI BANKOWE
+        private final String name;
+        // wartość operacji w groszach np. -7200, 27570
+        private final int valueInPennies;
+        // saldo ksiegowe w groszach
+        private final int accountBalanceInPennies;
 
-// TODO dodac od kogo/do kogo przelew, tytul itp.
-class Transaction {
-    // data ksiegowania
-    private final Date bookingDate;
-    // data operacji
-    private final Date transactionDate;
-    // nazwa operacji np. PRZELEW KRAJOWY, PŁACĘ Z T-MOBILE USŁUGI BANKOWE
-    private final String name;
-    // wartość operacji w groszach np. -7200, 27570
-    private final int valueInPennies;
-    // saldo ksiegowe w groszach
-    private final int accountBalanceInPennies;
+        Transaction(Date bookingDate, Date transactionDate, String name, int valueInPennies, int accountBalanceInPennies) {
+            this.bookingDate = bookingDate;
+            this.transactionDate = transactionDate;
+            this.name = name;
+            this.valueInPennies = valueInPennies;
+            this.accountBalanceInPennies = accountBalanceInPennies;
+        }
 
-    public Transaction(Date bookingDate, Date transactionDate, String name, int valueInPennies, int accountBalanceInPennies) {
-        this.bookingDate = bookingDate;
-        this.transactionDate = transactionDate;
-        this.name = name;
-        this.valueInPennies = valueInPennies;
-        this.accountBalanceInPennies = accountBalanceInPennies;
-    }
+        @Override
+        public String toString() {
+            JSONObject jsonObject = new JSONObject();
 
-    public Date getBookingDate() {
-        return bookingDate;
-    }
+            jsonObject.put("name", name);
+            jsonObject.put("bookingDate", dateFormatter.format(bookingDate));
+            jsonObject.put("transactionDate", dateFormatter.format(transactionDate));
+            jsonObject.put("valueInPennies", valueInPennies);
+            jsonObject.put("accountBalanceInPennies", accountBalanceInPennies);
 
-    public Date getTransactionDate() {
-        return transactionDate;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getValueInPennies() {
-        return valueInPennies;
-    }
-
-    public int getAccountBalanceInPennies() {
-        return accountBalanceInPennies;
-    }
-
-    @Override
-    public String toString() {
-        return "Transaction{" +
-                "bookingDate=" + bookingDate +
-                ", transactionDate=" + transactionDate +
-                ", name='" + name + '\'' +
-                ", valueInPennies=" + valueInPennies +
-                ", accountBalanceInPennies=" + accountBalanceInPennies +
-                '}';
+            return jsonObject.toJSONString();
+        }
     }
 }
