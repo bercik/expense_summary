@@ -8,15 +8,17 @@ import java.util.List;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-import org.json.simple.JSONObject;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.bercik.pdf_converter.PdfConverter;
 import com.github.bercik.pdf_converter.PdfReader;
 
 public class Transactions implements Iterable<Transaction> {
     private final List<Transaction> transactions;
+    private final SimpleDateFormat dateFormatter;
 
-    public Transactions() {
+    public Transactions(SimpleDateFormat dateFormatter) {
+        this.dateFormatter = dateFormatter;
         this.transactions = new ArrayList<>();
     }
 
@@ -33,12 +35,11 @@ public class Transactions implements Iterable<Transaction> {
         transactions.add(transaction);
     }
 
-    public String toJsonString() {
-        JSONObject jsonObject = new JSONObject();
+    public String toJsonString() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setDateFormat(dateFormatter);
 
-        jsonObject.put("transactions", transactions);
-
-        return jsonObject.toJSONString();
+        return mapper.writeValueAsString(transactions);
     }
 
     @Override

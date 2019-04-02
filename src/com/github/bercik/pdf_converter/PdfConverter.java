@@ -29,7 +29,7 @@ public class PdfConverter {
     }
 
     private Transactions proccessBlocks(List<Block> blocks) {
-        Transactions transactions = new Transactions();
+        Transactions transactions = new Transactions(dateFormatter);
 
         for (Block block : blocks) {
             transactions.addTransaction(proccessBlock(block));
@@ -45,7 +45,6 @@ public class PdfConverter {
         int accountBalanceInPennies = 0;
 
         for (String word : block.getWords()) {
-            word = word.replaceAll("\u00A0", "");
             if (name == null) {
                 Optional<Integer> value = getValueInPennies(word);
                 if (value.isPresent()) {
@@ -60,11 +59,15 @@ public class PdfConverter {
             }
         }
 
-        return new Transaction(dateFormatter, block.getFirstDate(), block.getSecondDate(), name, valueInPennies,
+        return new Transaction(block.getFirstDate(), block.getSecondDate(), name, valueInPennies,
                 accountBalanceInPennies);
     }
 
     private Optional<Integer> getValueInPennies(String word) {
+        // We do this because if amount is at least 1000 it is splitted using this character (it looks like space)
+        // 1 000, 2 340 etc.
+        word = word.replaceAll("\u00A0", "");
+
         Pattern pattern = Pattern.compile("^(-?)(\\d+),(\\d{2})$");
         Matcher matcher = pattern.matcher(word);
         if (matcher.find()) {

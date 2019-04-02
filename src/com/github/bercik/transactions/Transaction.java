@@ -1,13 +1,9 @@
 package com.github.bercik.transactions;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import org.json.simple.JSONObject;
 
 // TODO dodac od kogo/do kogo przelew, tytul itp.
 public class Transaction {
-    private SimpleDateFormat dateFormatter;
     // data ksiegowania
     private final Date bookingDate;
     // data operacji
@@ -19,10 +15,9 @@ public class Transaction {
     // saldo ksiegowe w groszach
     private final long accountBalanceInPennies;
 
-    public Transaction(SimpleDateFormat dateFormatter, Date bookingDate, Date transactionDate, String name,
+    public Transaction(Date bookingDate, Date transactionDate, String name,
                        long valueInPennies,
                        long accountBalanceInPennies) {
-        this.dateFormatter = dateFormatter;
         this.bookingDate = bookingDate;
         this.transactionDate = transactionDate;
         this.name = name;
@@ -30,19 +25,7 @@ public class Transaction {
         this.accountBalanceInPennies = accountBalanceInPennies;
     }
 
-    @Override
-    public String toString() {
-        JSONObject jsonObject = new JSONObject();
-
-        jsonObject.put("name", name);
-        jsonObject.put("bookingDate", dateFormatter.format(bookingDate));
-        jsonObject.put("transactionDate", dateFormatter.format(transactionDate));
-        jsonObject.put("valueInPennies", valueInPennies);
-        jsonObject.put("accountBalanceInPennies", accountBalanceInPennies);
-
-        return jsonObject.toJSONString();
-    }
-
+    @SuppressWarnings("unused")
     public Date getBookingDate() {
         return bookingDate;
     }
@@ -51,6 +34,7 @@ public class Transaction {
         return transactionDate;
     }
 
+    @SuppressWarnings("unused")
     public String getName() {
         return name;
     }
@@ -59,6 +43,7 @@ public class Transaction {
         return valueInPennies;
     }
 
+    @SuppressWarnings("unused")
     public long getAccountBalanceInPennies() {
         return accountBalanceInPennies;
     }
