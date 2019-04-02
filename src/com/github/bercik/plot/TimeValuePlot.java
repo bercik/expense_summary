@@ -38,7 +38,7 @@ public class TimeValuePlot {
 
     static public class PlotShowingOptions {
         public enum MoneyShowing implements ValueTransformer {
-            PENNIES {
+            @SuppressWarnings("unused") PENNIES {
                 @Override
                 public double transform(double pennies) {
                     return pennies;
@@ -106,7 +106,7 @@ public class TimeValuePlot {
     }
 
     static public class PlotData {
-        private List<PlotSeries> plotSeriesList;
+        private final List<PlotSeries> plotSeriesList;
 
         public PlotData() {
             this.plotSeriesList = new ArrayList<>();

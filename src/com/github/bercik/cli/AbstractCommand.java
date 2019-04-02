@@ -57,7 +57,7 @@ abstract class AbstractCommand implements Command {
     }
 
     private String badUsageMessageIfExecuteIsNotOverriden(List<String> args) {
-        String errorMessage = "";
+        String errorMessage;
         if (args.size() <= 0) {
             errorMessage = "You must provide command";
         } else {

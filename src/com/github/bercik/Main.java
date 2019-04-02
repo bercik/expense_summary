@@ -9,7 +9,7 @@ import com.github.bercik.cli.ExecutionException;
 import com.github.bercik.cli.RootCommand;
 import com.github.bercik.config.Configuration;
 
-public class Main {
+class Main {
 
     public static void main(String[] args) {
         Command rootCommand = initialize();
