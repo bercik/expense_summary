@@ -1,13 +1,8 @@
 package com.github.bercik;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Optional;
-
-import org.json.simple.parser.ParseException;
 
 import com.github.bercik.adapter.SpendEachDayAdapter;
 import com.github.bercik.commons.Transactions;
@@ -18,13 +13,14 @@ import com.github.bercik.plot.TimeValuePlot;
 public class Main {
     private static final String programCliArgument = "expense_summary";
     private static final SimpleDateFormat dateFormatter;
+    private static TimeValuePlot.PlotData plotData;
 
     static {
         dateFormatter = new SimpleDateFormat("yyyy.MM.dd");
         dateFormatter.setLenient(false);
     }
 
-    public static void main(String[] args) throws IOException, ParseException, java.text.ParseException {
+    public static void main(String[] args) throws IOException {
         if (args.length < 1) {
             showHelpAndExit();
         }
@@ -39,31 +35,34 @@ public class Main {
         }
     }
 
-    private static String readFile(String path)
-            throws IOException {
-        byte[] encoded = Files.readAllBytes(Paths.get(path));
-        return new String(encoded, StandardCharsets.UTF_8);
-    }
-
-    private static void plot(String[] args) throws IOException, ParseException, java.text.ParseException {
+    private static void plot(String[] args) throws IOException {
         if (args.length < 2) {
             System.err.println("Usage: " + programCliArgument + " " + args[0] + " [input_filepath] {output_filepath}");
             System.exit(1);
         }
 
         String inputFilepath = args[1];
+
+        Transactions transactions = getTransactionsFromPdfFile(inputFilepath);
+
         Optional<String> outputFilepath = Optional.empty();
         if (args.length > 2) {
             outputFilepath = Optional.of(args[2]);
         }
 
-        String jsonText = readFile(inputFilepath);
-        Transactions transactions = Transactions.fromJson(jsonText, dateFormatter);
-
-        SpendEachDayAdapter spendEachDayAdapter = new SpendEachDayAdapter();
-
         TimeValuePlot timeValuePlot = new TimeValuePlot();
-        timeValuePlot.showOnScreen(spendEachDayAdapter.adapt(transactions, value -> value / 100.0));
+        TimeValuePlot.ChartMetadata chartMetadata = new TimeValuePlot.ChartMetadata()
+                .title("each day spending")
+                .timeAxisLabel("day")
+                .valueAxisLabel("spending [zł]");
+        TimeValuePlot.PlotMetadata plotMetadata = new TimeValuePlot.PlotMetadata()
+                .applicationTitle("each day spending")
+                .chartMetadata(chartMetadata);
+        TimeValuePlot.PlotShowingOptions plotShowingOptions =
+                new TimeValuePlot.PlotShowingOptions().moneyShowing(TimeValuePlot.PlotShowingOptions.MoneyShowing.ZLOTYS);
+        plotData = new SpendEachDayAdapter().adapt(transactions);
+
+        timeValuePlot.showOnScreen(plotData, plotMetadata, plotShowingOptions);
     }
 
     private static void convert(String[] args) throws IOException {
@@ -73,20 +72,24 @@ public class Main {
         }
         String inputFilepath = args[1];
 
+        Transactions transactions = getTransactionsFromPdfFile(inputFilepath);
+
+        System.out.println(transactions.toJsonString());
+    }
+
+    private static Transactions getTransactionsFromPdfFile(String inputFilepath) throws IOException {
         PdfReader pdfReader = new PdfReader();
-        String text = pdfReader.readTextFrom(inputFilepath);
+        String text = pdfReader.readTextFromPdf(inputFilepath);
 
         PdfConverter pdfConverter = new PdfConverter(dateFormatter);
-        String jsonText = pdfConverter.convertToJSON(text);
-
-        System.out.println(jsonText);
+        return pdfConverter.convertToTransactions(text);
     }
 
     private static void showHelpAndExit() {
         System.err.println("Usage: " + programCliArgument + " [command]");
         System.err.println("where command can be one of:");
         System.err.println("  convert [input_file] - converts given pdf file to JSON");
-        System.err.println("  plot [input_file] {output_file} - plots given json file and shows on screen or if given" +
+        System.err.println("  plot [input_file] {output_file} - plots given pdf file and shows on screen or if given" +
                 " to output_file in jpeg format");
         System.exit(1);
     }

@@ -7,13 +7,18 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
 public class PdfReader {
-    public String readTextFrom(@SuppressWarnings("SameParameterValue") String filepath) throws IOException {
-        File file = new File(filepath);
-        PDDocument document = PDDocument.load(file);
+    public String readTextFromPdf(@SuppressWarnings("SameParameterValue") String filepath) throws IOException {
+        PDDocument document = null;
+        try {
+            File file = new File(filepath);
+            document = PDDocument.load(file);
+            PDFTextStripper pdfTextStripper = new PDFTextStripper();
 
-        PDFTextStripper pdfTextStripper = new PDFTextStripper();
-
-        return pdfTextStripper.getText(document);
+            return pdfTextStripper.getText(document);
+        } finally {
+            if (document != null) {
+                document.close();
+            }
+        }
     }
-
 }

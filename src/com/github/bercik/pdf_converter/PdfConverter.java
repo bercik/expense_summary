@@ -21,12 +21,12 @@ public class PdfConverter {
         dateFormatter.setLenient(false);
     }
 
-    public String convertToJSON(String inputText) {
+    public Transactions convertToTransactions(String inputText) {
         inputText = normalizeText(inputText);
 
         List<Block> blocks = getBlocks(inputText);
 
-        return proccessBlocks(blocks).toJsonString();
+        return proccessBlocks(blocks);
     }
 
     private Transactions proccessBlocks(List<Block> blocks) {

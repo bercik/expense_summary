@@ -19,8 +19,72 @@ import org.jfree.data.xy.XYDataset;
 
 public class TimeValuePlot {
 
+    static public class PlotShowingOptions {
+        public enum MoneyShowing implements ValueTransformer {
+            PENNIES {
+                @Override
+                public double transform(double pennies) {
+                    return pennies;
+                }
+            },
+            ZLOTYS {
+                @Override
+                public double transform(double pennies) {
+                    return pennies / 100.0;
+                }
+            }
+        }
+
+        private MoneyShowing moneyShowing;
+
+        public PlotShowingOptions moneyShowing(MoneyShowing moneyShowing) {
+            this.moneyShowing = moneyShowing;
+            return this;
+        }
+    }
+
+    static public class PlotMetadata {
+        String applicationTitle = "";
+        ChartMetadata chartMetadata = new ChartMetadata();
+
+        public PlotMetadata applicationTitle(String applicationTitle) {
+            this.applicationTitle = applicationTitle;
+            return this;
+        }
+
+        public PlotMetadata chartMetadata(ChartMetadata chartMetadata) {
+            this.chartMetadata = chartMetadata;
+            return this;
+        }
+    }
+
+    static public class ChartMetadata {
+        String title = "";
+        String timeAxisLabel = "";
+        String valueAxisLabel = "";
+
+        public ChartMetadata title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public ChartMetadata timeAxisLabel(String timeAxisLabel) {
+            this.timeAxisLabel = timeAxisLabel;
+            return this;
+        }
+
+        public ChartMetadata valueAxisLabel(String valueAxisLabel) {
+            this.valueAxisLabel = valueAxisLabel;
+            return this;
+        }
+    }
+
+    interface ValueTransformer {
+        double transform(double value);
+    }
+
     static public class PlotData {
-        List<PlotSeries> plotSeriesList;
+        private List<PlotSeries> plotSeriesList;
 
         public PlotData() {
             this.plotSeriesList = new ArrayList<>();
@@ -30,11 +94,11 @@ public class TimeValuePlot {
             plotSeriesList.add(plotSeries);
         }
 
-        XYDataset toTimeSeriesCollection() {
+        XYDataset toTimeSeriesCollection(ValueTransformer valueTransformer) {
             TimeSeriesCollection timeSeriesCollection = new TimeSeriesCollection();
 
             for (PlotSeries plotSeries : plotSeriesList) {
-                timeSeriesCollection.addSeries(plotSeries.toTimeSeries());
+                timeSeriesCollection.addSeries(plotSeries.toTimeSeries(valueTransformer));
             }
 
             return timeSeriesCollection;
@@ -61,11 +125,11 @@ public class TimeValuePlot {
             plotPoints.add(plotPoint);
         }
 
-        TimeSeries toTimeSeries() {
+        TimeSeries toTimeSeries(ValueTransformer valueTransformer) {
             TimeSeries timeSeries = new TimeSeries(name);
 
             for (PlotPoint plotPoint : plotPoints) {
-                timeSeries.add(new Day(plotPoint.date), plotPoint.value);
+                timeSeries.add(new Day(plotPoint.date), valueTransformer.transform(plotPoint.value));
             }
 
             return timeSeries;
@@ -87,10 +151,11 @@ public class TimeValuePlot {
 
     class PlotOnScreen extends ApplicationFrame {
 
-        PlotOnScreen(PlotData plotData, String applicationTitle) {
-            super(applicationTitle);
+        PlotOnScreen(PlotData plotData, PlotMetadata plotMetadata, PlotShowingOptions plotShowingOptions) {
+            super(plotMetadata.applicationTitle);
 
-            JFreeChart timeseriesChart = createTimeseriesChart(plotData.toTimeSeriesCollection());
+            JFreeChart timeseriesChart = createTimeseriesChart(plotData.toTimeSeriesCollection(plotShowingOptions.moneyShowing),
+                    plotMetadata);
 
             ChartPanel chartPanel = new ChartPanel(timeseriesChart);
             chartPanel.setPreferredSize(new java.awt.Dimension(1200, 800));
@@ -98,11 +163,11 @@ public class TimeValuePlot {
             setContentPane(chartPanel);
         }
 
-        private JFreeChart createTimeseriesChart(final XYDataset dataset) {
+        private JFreeChart createTimeseriesChart(final XYDataset dataset, PlotMetadata plotMetadata) {
             return ChartFactory.createTimeSeriesChart(
-                    "Expense summary",
-                    "Date",
-                    "Spending",
+                    plotMetadata.chartMetadata.title,
+                    plotMetadata.chartMetadata.timeAxisLabel,
+                    plotMetadata.chartMetadata.valueAxisLabel,
                     dataset,
                     false,
                     false,
@@ -115,8 +180,8 @@ public class TimeValuePlot {
         }
     }
 
-    public void showOnScreen(PlotData plotData) {
-        PlotOnScreen plotOnScreen = new PlotOnScreen(plotData, "expense summary");
+    public void showOnScreen(PlotData plotData, PlotMetadata plotMetadata, PlotShowingOptions plotShowingOptions) {
+        PlotOnScreen plotOnScreen = new PlotOnScreen(plotData, plotMetadata, plotShowingOptions);
         plotOnScreen.showOnScreen();
     }
 
