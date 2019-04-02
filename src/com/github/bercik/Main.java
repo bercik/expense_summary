@@ -13,7 +13,8 @@ import com.github.bercik.plot.TimeValuePlot;
 public class Main {
     private static final String programCliArgument = "expense_summary";
     private static final SimpleDateFormat dateFormatter;
-    private static TimeValuePlot.PlotData plotData;
+    private static final int PLOT_WIDTH = 1200;
+    private static final int PLOT_HEIGHT = 800;
 
     static {
         dateFormatter = new SimpleDateFormat("yyyy.MM.dd");
@@ -53,7 +54,7 @@ public class Main {
         }
 
         if (outputFilepath.isPresent()) {
-            timeValuePlot.saveToFile(outputFilepath.get());
+            timeValuePlot.saveToFileAsJpeg(outputFilepath.get());
         } else {
             timeValuePlot.showOnScreen();
         }
@@ -64,12 +65,13 @@ public class Main {
                 .title("each day spending")
                 .timeAxisLabel("day")
                 .valueAxisLabel("spending [zł]");
-        TimeValuePlot.PlotMetadata plotMetadata = new TimeValuePlot.PlotMetadata()
-                .applicationTitle("each day spending")
-                .chartMetadata(chartMetadata);
+        TimeValuePlot.PlotMetadata plotMetadata =
+                new TimeValuePlot.PlotMetadata(new TimeValuePlot.PlotDimensions(PLOT_WIDTH, PLOT_HEIGHT))
+                        .applicationTitle("each day spending")
+                        .chartMetadata(chartMetadata);
         TimeValuePlot.PlotShowingOptions plotShowingOptions =
                 new TimeValuePlot.PlotShowingOptions().moneyShowing(TimeValuePlot.PlotShowingOptions.MoneyShowing.ZLOTYS);
-        plotData = new SpendEachDayAdapter().adapt(transactions);
+        TimeValuePlot.PlotData plotData = new SpendEachDayAdapter().adapt(transactions);
         return new TimeValuePlot(plotData, plotMetadata, plotShowingOptions);
     }
 

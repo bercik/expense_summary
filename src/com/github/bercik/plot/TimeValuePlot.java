@@ -18,8 +18,23 @@ import org.jfree.data.xy.XYDataset;
 
 public class TimeValuePlot {
 
-    public static final int PLOT_WIDTH = 1200;
-    public static final int PLOT_HEIGHT = 800;
+    static public class PlotDimensions {
+        private final int width;
+        private final int height;
+
+        public PlotDimensions(int width, int height) {
+            assertDimensionsGreaterThanZero(width);
+            assertDimensionsGreaterThanZero(height);
+            this.width = width;
+            this.height = height;
+        }
+
+        private void assertDimensionsGreaterThanZero(int dimension) {
+            if (dimension <= 0) {
+                throw new IllegalArgumentException("Dimension must be greater than zero, got " + dimension);
+            }
+        }
+    }
 
     static public class PlotShowingOptions {
         public enum MoneyShowing implements ValueTransformer {
@@ -48,6 +63,11 @@ public class TimeValuePlot {
     static public class PlotMetadata {
         String applicationTitle = "";
         ChartMetadata chartMetadata = new ChartMetadata();
+        final PlotDimensions plotDimensions;
+
+        public PlotMetadata(PlotDimensions plotDimensions) {
+            this.plotDimensions = plotDimensions;
+        }
 
         public PlotMetadata applicationTitle(String applicationTitle) {
             this.applicationTitle = applicationTitle;
@@ -162,8 +182,8 @@ public class TimeValuePlot {
         new PlotOnScreen(plotData, plotMetadata, plotShowingOptions).showOnScreen();
     }
 
-    public void saveToFile(String outputFilepath) throws IOException {
-        new PlotToFile().saveToFile(plotData, plotMetadata, plotShowingOptions, outputFilepath);
+    public void saveToFileAsJpeg(String outputFilepath) throws IOException {
+        new PlotToFile(plotData, plotMetadata, plotShowingOptions).saveToFile(outputFilepath);
     }
 
     static class PlotOnScreen extends ApplicationFrame {
@@ -176,7 +196,8 @@ public class TimeValuePlot {
                             .create(plotData.toTimeSeriesCollection(plotShowingOptions.moneyShowing), plotMetadata);
 
             ChartPanel chartPanel = new ChartPanel(timeseriesChart);
-            chartPanel.setPreferredSize(new java.awt.Dimension(PLOT_WIDTH, PLOT_HEIGHT));
+            chartPanel.setPreferredSize(new java.awt.Dimension(plotMetadata.plotDimensions.width,
+                    plotMetadata.plotDimensions.height));
 
             setContentPane(chartPanel);
         }
@@ -189,14 +210,24 @@ public class TimeValuePlot {
     }
 
     static class PlotToFile {
-        public void saveToFile(PlotData plotData, PlotMetadata plotMetadata,
-                               PlotShowingOptions plotShowingOptions, String outputFilepath) throws IOException {
+        private final PlotData plotData;
+        private final PlotMetadata plotMetadata;
+        private final PlotShowingOptions plotShowingOptions;
+
+        PlotToFile(PlotData plotData, PlotMetadata plotMetadata, PlotShowingOptions plotShowingOptions) {
+            this.plotData = plotData;
+            this.plotMetadata = plotMetadata;
+            this.plotShowingOptions = plotShowingOptions;
+        }
+
+        void saveToFile(String outputFilepath) throws IOException {
             JFreeChart timeseriesChart =
                     new TimeseriesChart()
                             .create(plotData.toTimeSeriesCollection(plotShowingOptions.moneyShowing), plotMetadata);
 
             File XYChart = new File(outputFilepath);
-            ChartUtils.saveChartAsJPEG(XYChart, timeseriesChart, PLOT_WIDTH, PLOT_HEIGHT);
+            ChartUtils.saveChartAsJPEG(XYChart, timeseriesChart, plotMetadata.plotDimensions.width,
+                    plotMetadata.plotDimensions.height);
         }
     }
 
