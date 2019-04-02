@@ -45,12 +45,21 @@ public class Main {
 
         Transactions transactions = getTransactionsFromPdfFile(inputFilepath);
 
+        TimeValuePlot timeValuePlot = createTimeValuePlot(transactions);
+
         Optional<String> outputFilepath = Optional.empty();
         if (args.length > 2) {
             outputFilepath = Optional.of(args[2]);
         }
 
-        TimeValuePlot timeValuePlot = new TimeValuePlot();
+        if (outputFilepath.isPresent()) {
+            timeValuePlot.saveToFile(outputFilepath.get());
+        } else {
+            timeValuePlot.showOnScreen();
+        }
+    }
+
+    private static TimeValuePlot createTimeValuePlot(Transactions transactions) {
         TimeValuePlot.ChartMetadata chartMetadata = new TimeValuePlot.ChartMetadata()
                 .title("each day spending")
                 .timeAxisLabel("day")
@@ -61,12 +70,7 @@ public class Main {
         TimeValuePlot.PlotShowingOptions plotShowingOptions =
                 new TimeValuePlot.PlotShowingOptions().moneyShowing(TimeValuePlot.PlotShowingOptions.MoneyShowing.ZLOTYS);
         plotData = new SpendEachDayAdapter().adapt(transactions);
-
-        if (outputFilepath.isPresent()) {
-            timeValuePlot.saveToFile(plotData, plotMetadata, plotShowingOptions, outputFilepath.get());
-        } else {
-            timeValuePlot.showOnScreen(plotData, plotMetadata, plotShowingOptions);
-        }
+        return new TimeValuePlot(plotData, plotMetadata, plotShowingOptions);
     }
 
     private static void convert(String[] args) throws IOException {

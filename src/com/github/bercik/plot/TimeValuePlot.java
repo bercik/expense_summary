@@ -148,14 +148,21 @@ public class TimeValuePlot {
         }
     }
 
-    public TimeValuePlot() {
+    private final PlotData plotData;
+    private final PlotMetadata plotMetadata;
+    private final PlotShowingOptions plotShowingOptions;
+
+    public TimeValuePlot(PlotData plotData, PlotMetadata plotMetadata, PlotShowingOptions plotShowingOptions) {
+        this.plotData = plotData;
+        this.plotMetadata = plotMetadata;
+        this.plotShowingOptions = plotShowingOptions;
     }
 
-    public void showOnScreen(PlotData plotData, PlotMetadata plotMetadata, PlotShowingOptions plotShowingOptions) {
+    public void showOnScreen() {
         new PlotOnScreen(plotData, plotMetadata, plotShowingOptions).showOnScreen();
     }
 
-    public void saveToFile(PlotData plotData, PlotMetadata plotMetadata, PlotShowingOptions plotShowingOptions, String outputFilepath) throws IOException {
+    public void saveToFile(String outputFilepath) throws IOException {
         new PlotToFile().saveToFile(plotData, plotMetadata, plotShowingOptions, outputFilepath);
     }
 
