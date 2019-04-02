@@ -10,7 +10,6 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.ui.ApplicationFrame;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
@@ -18,6 +17,9 @@ import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
 
 public class TimeValuePlot {
+
+    public static final int PLOT_WIDTH = 1200;
+    public static final int PLOT_HEIGHT = 800;
 
     static public class PlotShowingOptions {
         public enum MoneyShowing implements ValueTransformer {
@@ -149,21 +151,53 @@ public class TimeValuePlot {
     public TimeValuePlot() {
     }
 
-    class PlotOnScreen extends ApplicationFrame {
+    public void showOnScreen(PlotData plotData, PlotMetadata plotMetadata, PlotShowingOptions plotShowingOptions) {
+        new PlotOnScreen(plotData, plotMetadata, plotShowingOptions).showOnScreen();
+    }
+
+    public void saveToFile(PlotData plotData, PlotMetadata plotMetadata, PlotShowingOptions plotShowingOptions, String outputFilepath) throws IOException {
+        new PlotToFile().saveToFile(plotData, plotMetadata, plotShowingOptions, outputFilepath);
+    }
+
+    static class PlotOnScreen extends ApplicationFrame {
 
         PlotOnScreen(PlotData plotData, PlotMetadata plotMetadata, PlotShowingOptions plotShowingOptions) {
             super(plotMetadata.applicationTitle);
 
-            JFreeChart timeseriesChart = createTimeseriesChart(plotData.toTimeSeriesCollection(plotShowingOptions.moneyShowing),
-                    plotMetadata);
+            JFreeChart timeseriesChart =
+                    new TimeseriesChart()
+                            .create(plotData.toTimeSeriesCollection(plotShowingOptions.moneyShowing), plotMetadata);
 
             ChartPanel chartPanel = new ChartPanel(timeseriesChart);
-            chartPanel.setPreferredSize(new java.awt.Dimension(1200, 800));
+            chartPanel.setPreferredSize(new java.awt.Dimension(PLOT_WIDTH, PLOT_HEIGHT));
 
             setContentPane(chartPanel);
         }
 
-        private JFreeChart createTimeseriesChart(final XYDataset dataset, PlotMetadata plotMetadata) {
+        void showOnScreen() {
+            pack();
+            setVisible(true);
+        }
+
+    }
+
+    static class PlotToFile {
+        public void saveToFile(PlotData plotData, PlotMetadata plotMetadata,
+                               PlotShowingOptions plotShowingOptions, String outputFilepath) throws IOException {
+            JFreeChart timeseriesChart =
+                    new TimeseriesChart()
+                            .create(plotData.toTimeSeriesCollection(plotShowingOptions.moneyShowing), plotMetadata);
+
+            File XYChart = new File(outputFilepath);
+            ChartUtils.saveChartAsJPEG(XYChart, timeseriesChart, PLOT_WIDTH, PLOT_HEIGHT);
+        }
+    }
+
+    static class TimeseriesChart {
+        TimeseriesChart() {
+        }
+
+        JFreeChart create(final XYDataset dataset, PlotMetadata plotMetadata) {
             return ChartFactory.createTimeSeriesChart(
                     plotMetadata.chartMetadata.title,
                     plotMetadata.chartMetadata.timeAxisLabel,
@@ -173,31 +207,5 @@ public class TimeValuePlot {
                     false,
                     false);
         }
-
-        void showOnScreen() {
-            pack();
-            setVisible(true);
-        }
-    }
-
-    public void showOnScreen(PlotData plotData, PlotMetadata plotMetadata, PlotShowingOptions plotShowingOptions) {
-        PlotOnScreen plotOnScreen = new PlotOnScreen(plotData, plotMetadata, plotShowingOptions);
-        plotOnScreen.showOnScreen();
-    }
-
-    // TODO
-    public void saveToFile(XYDataset dataset, String outputFilepath) throws IOException {
-        JFreeChart xylineChart = ChartFactory.createXYLineChart(
-                "Browser usage statastics",
-                "Category",
-                "Score",
-                dataset,
-                PlotOrientation.VERTICAL,
-                true, true, false);
-
-        int width = 640;   /* Width of the image */
-        int height = 480;  /* Height of the image */
-        File XYChart = new File(outputFilepath);
-        ChartUtils.saveChartAsJPEG(XYChart, xylineChart, width, height);
     }
 }

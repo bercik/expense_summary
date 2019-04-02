@@ -62,7 +62,11 @@ public class Main {
                 new TimeValuePlot.PlotShowingOptions().moneyShowing(TimeValuePlot.PlotShowingOptions.MoneyShowing.ZLOTYS);
         plotData = new SpendEachDayAdapter().adapt(transactions);
 
-        timeValuePlot.showOnScreen(plotData, plotMetadata, plotShowingOptions);
+        if (outputFilepath.isPresent()) {
+            timeValuePlot.saveToFile(plotData, plotMetadata, plotShowingOptions, outputFilepath.get());
+        } else {
+            timeValuePlot.showOnScreen(plotData, plotMetadata, plotShowingOptions);
+        }
     }
 
     private static void convert(String[] args) throws IOException {
