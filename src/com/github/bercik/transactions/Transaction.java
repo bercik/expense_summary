@@ -1,4 +1,4 @@
-package com.github.bercik.commons;
+package com.github.bercik.transactions;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

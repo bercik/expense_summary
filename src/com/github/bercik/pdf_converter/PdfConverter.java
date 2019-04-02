@@ -9,16 +9,15 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.github.bercik.commons.Transaction;
-import com.github.bercik.commons.Transactions;
+import com.github.bercik.transactions.Transaction;
+import com.github.bercik.transactions.Transactions;
 
 public class PdfConverter {
 
-    private SimpleDateFormat dateFormatter;
+    private final SimpleDateFormat dateFormatter;
 
     public PdfConverter(SimpleDateFormat dateFormatter) {
         this.dateFormatter = dateFormatter;
-        dateFormatter.setLenient(false);
     }
 
     public Transactions convertToTransactions(String inputText) {

@@ -4,30 +4,30 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.github.bercik.commons.Transaction;
-import com.github.bercik.commons.Transactions;
 import com.github.bercik.plot.TimeValuePlot;
+import com.github.bercik.transactions.Transaction;
+import com.github.bercik.transactions.Transactions;
 
 public class SpendEachDayAdapter implements Adapter {
     @Override
     public TimeValuePlot.PlotData adapt(Transactions transactions) {
 
-        Map<Date, Long> abc = new HashMap<>();
+        Map<Date, Long> everyDaySpendingMap = new HashMap<>();
 
         for (Transaction transaction : transactions) {
             Date transactionDate = transaction.getTransactionDate();
 
-            if (!abc.containsKey(transactionDate)) {
-                abc.put(transactionDate, 0L);
+            if (!everyDaySpendingMap.containsKey(transactionDate)) {
+                everyDaySpendingMap.put(transactionDate, 0L);
             }
 
-            Long value = abc.get(transactionDate);
-            abc.put(transactionDate, value + transaction.getValueInPennies());
+            Long value = everyDaySpendingMap.get(transactionDate);
+            everyDaySpendingMap.put(transactionDate, value + transaction.getValueInPennies());
         }
 
         TimeValuePlot.PlotSeries plotSeries = new TimeValuePlot.PlotSeries("spending each day");
 
-        for (Map.Entry<Date, Long> entry : abc.entrySet()) {
+        for (Map.Entry<Date, Long> entry : everyDaySpendingMap.entrySet()) {
             TimeValuePlot.PlotPoint plotPoint = new TimeValuePlot.PlotPoint(entry.getKey(), entry.getValue());
             plotSeries.addPlotPoint(plotPoint);
         }

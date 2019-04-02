@@ -1,5 +1,7 @@
-package com.github.bercik.commons;
+package com.github.bercik.transactions;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -8,11 +10,23 @@ import java.util.function.Consumer;
 
 import org.json.simple.JSONObject;
 
+import com.github.bercik.pdf_converter.PdfConverter;
+import com.github.bercik.pdf_converter.PdfReader;
+
 public class Transactions implements Iterable<Transaction> {
     private final List<Transaction> transactions;
 
     public Transactions() {
         this.transactions = new ArrayList<>();
+    }
+
+    public static Transactions getTransactionsFromPdfFile(String inputFilepath, SimpleDateFormat dateFormatter)
+            throws IOException {
+        PdfReader pdfReader = new PdfReader();
+        String text = pdfReader.readTextFromPdf(inputFilepath);
+
+        PdfConverter pdfConverter = new PdfConverter(dateFormatter);
+        return pdfConverter.convertToTransactions(text);
     }
 
     public void addTransaction(Transaction transaction) {
