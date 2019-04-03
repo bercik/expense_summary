@@ -1,0 +1,186 @@
+Nr wyciągu:
+Wyciąg za okres:
+Strona
+Wyciąg z rachunku bankowego
+JAN KOWALSKI
+LISICH LASIC 10/20
+52-325 WARSZAWA
+ Dane finansowe rachunku Dane rachunku
+Numer rachunku:
+Rodzaj rachunku:
+Waluta rachunku:
+IBAN:
+BIC/SWIFT:
+Przyznany limit odnawialny w rachunku:
+Saldo końcowe:
+Saldo poczatkowe:
+Kwota blokad:
+Uznania ogółem:
+Obciążenia ogółem:
+2019.02.01 - 2019.02.28
+2
+1 z
+12 3456 7890 1234 5678 9012 3456
+Rachunek oszczędnościowo -
+rozliczeniowy
+PLN
+PL 12 3456 7890 1234 5678 9012 3456
+321,70
+1 172,74
+0,00
+1 827,62
+1 676,58
+ALBP PL PW
+  19
+0,00
+Data wyciągu: 2019.02.28
+Niespłacone odsetki od zadłużenia: 0,00
+0,00Niespłacone koszty obsługi zadłużenia:
+1 137,59Saldo średnie:
+SALDO
+ Dane operacji
+OPIS
+OPERACJIDATA OPERACJI KSIĘGOWE
+DATA KSIĘGOWANIA
+OPERACJI
+KWOTA
+2019.02.01
+2019.02.01
+PRZELEW KRAJOWY 1,30 34,70
+11 1111 1111 1111 1111 1111 1111 ALI BABA PIERWSZY
+UL.GENERAŁA WEPTYCKIEGO 16 34-453 MAKOWA ZA
+NETFLIXA Data transakcji: 2019-02-01
+2019.02.01
+2019.02.01
+PRZELEW KRAJOWY 1,30 37,70
+22 2222 2222 2222 2222 2222 2222 ALI BABA DRUGI
+UL.DANKÓWKI 4 M.7 31-320 MSZYNA NETFLIX Data transakcji:
+2019-02-01
+2019.02.01
+2019.02.01
+PŁACĘ Z T-MOBILE USŁUGI BANKOWE -7,00 75,70
+12 1212 1212 1212 1212 1212 1212 Tpay.com św. Łukasz 7
+m.2, 64-814 Warszawa TMUB New Internet AB-1234-CDEF dla
+Miejskie Przedsi ebiorstwo Komunikacyjne S.A. w Krak owie
+2019.02.02
+2019.02.02
+PRZELEW WŁASNY 1 000,00 1 275,70
+12 1234 1234 1234 1234 1234 1234 Jan Kowalski Lisich Lasic 10/20A, 24-368 War szawa Na dobicie
+Infolinia T-Mobile Usługi Bankowe dostępna jest przez cała dobę pod numerami: 19 506 z Polski (koszt połączenia lokalnego) i telefonów
+komórkowych (koszt połączenia według stawek operatora), +48 12 19 506 z zagranicy (koszt połączenia według stawek operatora).
+T-Mobile Usługi Bankowe jest częścią Alior Bank S.A ul. Łopuszańska 38D, 02-232 Warszawa; Sad Rejonowy dla m.st. Warszawy, XIII
+Wydział Gospodarczy KRS: 0000305178, REGON: 141387142, NIP: 1070010731; kapitał zakładowy: 1 305 187 160 PLN (opłacony w
+całości).
+Wyciąg za okres:
+Nr wyciągu:
+Wyciąg z rachunku bankowego
+2
+2019.02.01 - 2019.02.28
+Strona
+2019.02.28Data wyciągu:
+2 z   19
+2019.02.02
+2019.01.31
+TRANSAKCJA KARTĄ DEBETOWĄ -1,95 1 24,75
+CARREFOUR RAKOWICKA 17 KRAKOW POL  1234 XXXX XXXX
+6789 Data transakcji: 2019-01-31 Kurs wymiany:   Kwota w
+walucie rozliczeniowej:   Kod MCC: 5411 Kwota i waluta
+oryginalna transakcji: 1.95PLN
+2019.02.02
+2019.01.31
+TRANSAKCJA KARTĄ DEBETOWĄ -1,22 1 25,53
+taxify.eu Tallinn EST  1234 XXXX XXXX 6789 Data transakcji:
+2019-01-31 Kurs wymiany:   Kwota w walucie rozliczeniowej:
+Kod MCC: 4121 Kwota i waluta oryginalna transakcji: 1.22PLN
+2019.02.02
+2019.01.31
+TRANSAKCJA KARTĄ DEBETOWĄ -1,88 1 23,65
+taxify.eu Tallinn EST  1234 XXXX XXXX 6789 Data transakcji:
+2019-01-31 Kurs wymiany:   Kwota w walucie rozliczeniowej:
+Kod MCC: 4121 Kwota i waluta oryginalna transakcji: 1.88PLN
+2019.02.02
+2019.01.31
+TRANSAKCJA KARTĄ DEBETOWĄ -3,90 1 13,80
+ZABKA Z5414 K.1 KRAKOW POL  1234 XXXX XXXX 6789 Data
+transakcji: 2019-01-31 Kurs wymiany:   Kwota w walucie
+rozliczeniowej:   Kod MCC: 5499 Kwota i waluta oryginalna
+transakcji: 3.90PLN
+Infolinia T-Mobile Usługi Bankowe dostępna jest przez cała dobę pod numerami: 19 506 z Polski (koszt połączenia lokalnego) i telefonów
+komórkowych (koszt połączenia według stawek operatora), +48 12 19 506 z zagranicy (koszt połączenia według stawek operatora).
+T-Mobile Usługi Bankowe jest częścią Alior Bank S.A ul. Łopuszańska 38D, 02-232 Warszawa; Sad Rejonowy dla m.st. Warszawy, XIII
+Wydział Gospodarczy KRS: 0000305178, REGON: 141387142, NIP: 1070010731; kapitał zakładowy: 1 305 187 160 PLN (opłacony w
+całości).
+Wyciąg za okres:
+Nr wyciągu:
+Wyciąg z rachunku bankowego
+2
+2019.02.01 - 2019.02.28
+Strona
+2019.02.28Data wyciągu:
+3 z   19
+2019.02.02
+2019.01.31
+TRANSAKCJA KARTĄ DEBETOWĄ -15,00 1 178,80
+MAMA DIDNT LIE PETER P KRAKOW POL  1234 XXXX XXXX 6789
+Data transakcji: 2019-01-31 Kurs wymiany:   Kwota w walucie
+rozliczeniowej:   Kod MCC: 5814 Kwota i waluta oryginalna
+transakcji: 15.00PLN
+2019.02.05
+2019.02.05
+PRZELEW KRAJOWY 1 072,33 2 194,74
+97 1030 1508 0000 0003 0024 9019 RYANAIR DAC RYANAIR
+DUBLIN OFFICE AIRSIDE SWORDS BUSINESS PARK, 14342
+TUD2 MR JAN KOWALSKI /191328 Data transakcji: 2019-
+02-05
+2019.02.05
+2019.02.02
+Infolinia T-Mobile Usługi Bankowe dostępna jest przez cała dobę pod numerami: 19 506 z Polski (koszt połączenia lokalnego) i telefonów
+komórkowych (koszt połączenia według stawek operatora), +48 12 19 506 z zagranicy (koszt połączenia według stawek operatora).
+T-Mobile Usługi Bankowe jest częścią Alior Bank S.A ul. Łopuszańska 38D, 02-232 Warszawa; Sad Rejonowy dla m.st. Warszawy, XIII
+Wydział Gospodarczy KRS: 0000305178, REGON: 141387142, NIP: 1070010731; kapitał zakładowy: 1 305 187 160 PLN (opłacony w
+całości).
+Wyciąg za okres:
+Nr wyciągu:
+Wyciąg z rachunku bankowego
+2
+2019.02.01 - 2019.02.28
+Strona
+2019.02.28Data wyciągu:
+19 z  19
+Niniejszy dokument jest wydrukiem komputerowym sporządzonym zgodnie z art. 7 Ustawy Prawo Bankowe (Dz. U. Nr 140 z 1997 roku,
+poz.939 z późniejszymi zmianami) i nie wymaga podpisów ani stempli bankowych.
+Infolinia T-Mobile Usługi Bankowe dostępna jest przez cała dobę pod numerami: 19 506 z Polski (koszt połączenia lokalnego) i telefonów
+komórkowych (koszt połączenia według stawek operatora), +48 12 19 506 z zagranicy (koszt połączenia według stawek operatora).
+T-Mobile Usługi Bankowe jest częścią Alior Bank S.A ul. Łopuszańska 38D, 02-232 Warszawa; Sad Rejonowy dla m.st. Warszawy, XIII
+Wydział Gospodarczy KRS: 0000305178, REGON: 141387142, NIP: 1070010731; kapitał zakładowy: 1 305 187 160 PLN (opłacony w
+całości).
+Zestawienie opłat
+Zawiera on również informacje o ewentualnych odsetkach, które zapłacili lub uzyskali Państwo w
+tym okresie.
+BIC: ALBPPLPW
+2019.02.28
+adres e-mail: kontakt@t-mobilebankowe.pl
+kontakt z infolinią: 19 506 lub (12) 370 71 00
+Lysich Lasic 10/20A
+12-345 Warszawa
+ul. Postępu 18 B, 02-676 Warszawa
+T-Mobile Usługi Bankowe Oddział Alior Bank SA
+adres internetowy: www.t-mobilebankowe.pl
+Data
+Informacje dotyczące poszczególnych transakcji i salda rachunku mogą Państwo znaleźć na
+wyciągu z rachunku.
+Dane rachunku
+Niniejszy dokument przedstawia wszystkie opłaty za usługi powiązane z Państwa rachunkiem
+płatniczym, które naliczono w powyższym okresie.
+Rachunek Rachunek płatniczy w PLN [Konto Freemium]
+Jan Kowalski
+Okres Od 2019.02.01 do 2019.02.28
+Krajowy numer rachunku: 12345634563456345634563456
+Krajowy numer rozliczeniowy: 22991122
+IBAN: PL12 3456 3456 3456 3456 3456 3456
+Strona 1 z 2
+Informacje dodatkowe
+Niniejszy dokument przekazujemy zgodnie z art. 32b Ustawy z dnia 19 sierpnia 2011 r. o
+usługach płatniczych (Dz. U. Nr 199 z 2011 r. poz. 1175 z późniejszymi zmianami).
+Brak opłat i naliczonych odsetek w okresie rozliczeniowym
+Strona 2 z 2
