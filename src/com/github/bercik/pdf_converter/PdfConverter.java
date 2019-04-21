@@ -59,8 +59,16 @@ public class PdfConverter {
             }
         }
 
-        return new Transaction(block.getFirstDate(), block.getSecondDate(), name, valueInPennies,
-                accountBalanceInPennies);
+        assert name != null;
+        name = name.replaceAll("\u00A0", " ");
+
+        return Transaction.builder()
+                .bookingDate(block.getFirstDate())
+                .transactionDate(block.getSecondDate())
+                .name(name)
+                .valueInPennies(valueInPennies)
+                .accountBalanceInPennies(accountBalanceInPennies)
+                .build();
     }
 
     private Optional<Integer> getValueInPennies(String word) {

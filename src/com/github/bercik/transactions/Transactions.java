@@ -42,6 +42,14 @@ public class Transactions implements Iterable<Transaction> {
         return mapper.writeValueAsString(transactions);
     }
 
+    public Transaction get(int index) {
+        return transactions.get(index);
+    }
+
+    public int size() {
+        return transactions.size();
+    }
+
     @Override
     public Iterator<Transaction> iterator() {
         return transactions.iterator();
@@ -55,5 +63,27 @@ public class Transactions implements Iterable<Transaction> {
     @Override
     public Spliterator<Transaction> spliterator() {
         return transactions.spliterator();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Transactions that = (Transactions) o;
+
+        return transactions.equals(that.transactions);
+    }
+
+    @Override
+    public int hashCode() {
+        return transactions.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Transactions{" +
+                "transactions=" + transactions +
+                '}';
     }
 }
