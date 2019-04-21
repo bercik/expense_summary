@@ -9,6 +9,7 @@ import java.util.GregorianCalendar;
 
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -19,6 +20,7 @@ import com.github.bercik.transactions.Transactions;
 @RunWith(MockitoJUnitRunner.class)
 public class PdfConverterTest {
 
+    @Ignore
     @Test
     public void testConvertToTransactions() throws Exception {
         // given
